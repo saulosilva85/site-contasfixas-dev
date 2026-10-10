@@ -42,3 +42,16 @@ publicá-las para os clientes reais no repositório de produção
       credenciais de **teste** do Mercado Pago
 - [ ] Criar o registro DNS `dev` (CNAME) no registro.br apontando para `saulosilva85.github.io`
 - [ ] Ativar GitHub Pages neste repositório com domínio customizado `dev.contasfixas.com.br`
+
+## Nota sobre testes de pagamento Pix (sandbox)
+
+Para o Mercado Pago aprovar automaticamente um pagamento Pix de teste, o campo
+`payer.first_name` enviado na criação da Order **precisa ser exatamente `"APRO"`**.
+Sem isso, o pagamento fica parado em `action_required` / `waiting_transfer` e nunca
+é aprovado. A função `create-pix` publicada no Supabase deve enviar:
+
+```json
+"payer": { "email": user.email, "first_name": "APRO" }
+```
+
+Fonte: https://www.mercadopago.com.br/developers/pt/docs/checkout-api-orders/integration-test/pix
